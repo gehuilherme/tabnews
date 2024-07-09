@@ -7,7 +7,7 @@ async function query(queryObject) {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
-    ssl: process.env.NODE_ENV === "development" ? false : true,
+    ssl: getSSLValues(),
   });
 
   try {
@@ -25,3 +25,15 @@ async function query(queryObject) {
 export default {
   query: query,
 };
+
+function getSSLValues() {
+  // No .env, caso necessário utilizar um certificado auto-assinado, remover os caracteres de newline e substituir para \n (Ex. Banco de dados hospedado pela Digital Ocean).
+  if (process.env.POSTGRES_CA) {
+    console.log("Teste");
+    return {
+      ca: process.env.POSTGRES_CA,
+    };
+  }
+
+  return process.env.NODE_ENV === "development" ? false : true;
+}
