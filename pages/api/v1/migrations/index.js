@@ -3,6 +3,11 @@ import migrationRunner from "node-pg-migrate";
 import { join } from "node:path";
 
 export default async function migrations(req, res) {
+  const allowedMethods = ["GET", "POST"];
+  if (!allowedMethods.includes(req.method)) {
+    return res.status(405).end();
+  }
+
   const dbClient = await database.getNewClient();
   const defaultMigrationOptions = {
     dbClient: dbClient,
@@ -37,6 +42,4 @@ export default async function migrations(req, res) {
 
     return res.status(200).json(migratedMigrations);
   }
-
-  return res.status(405).end();
 }
