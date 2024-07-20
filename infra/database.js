@@ -28,10 +28,12 @@ async function getNewClient() {
   return client;
 }
 
-export default {
+const database = {
   query,
   getNewClient,
 };
+
+export default database;
 
 function getSSLValues() {
   // No .env, caso necessário utilizar um certificado auto-assinado, remover os caracteres de newline e substituir para \n (Ex. Banco de dados hospedado pela Digital Ocean).
